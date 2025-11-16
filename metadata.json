@@ -1,0 +1,5 @@
+{
+  "name": "Astral Hero Tarot Encyclopedia",
+  "description": "An interactive web application serving as a complete encyclopedia for the 80-card Astral Hero Tarot deck. Browse a full gallery of cards and click on any card to view its detailed meanings and interpretations in a pop-up modal.",
+  "requestFramePermissions": []
+}

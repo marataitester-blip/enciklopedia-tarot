@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Энциклопедия Таро Астрального Героя</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'custom-bg': '#0f0f14',
+              'custom-fg': '#eae6df',
+              'custom-muted': '#c9c3b8',
+              'custom-accent': '#c7a87b',
+              'custom-card-bg': '#16161d',
+            },
+            fontFamily: {
+              'cinzel': ['"Cinzel"', 'Georgia', 'serif'],
+              'cormorant': ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            },
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-custom-bg text-custom-fg font-cormorant">
+    <div id="root"></div>
+  </body>
+</html>
