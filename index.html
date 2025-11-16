@@ -168,6 +168,20 @@
             color: var(--muted);
             font-style: italic;
         }
+        .modal-desc .instruction-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            border: 1px solid var(--muted);
+            border-radius: 4px;
+            font-family: sans-serif;
+            font-size: 1.2em;
+            vertical-align: middle;
+            font-weight: bold;
+            margin: 0 4px;
+        }
         .tts-button {
             background: none;
             border: 1px solid var(--accent);
@@ -207,6 +221,10 @@
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(199, 168, 123, 0.5);
         }
+        .fab-left {
+            left: 25px;
+            right: auto;
+        }
     </style>
 </head>
 <body>
@@ -230,8 +248,27 @@
             <button id="modal-tts-btn" class="tts-button" title="Озвучить/Остановить">🔊</button>
         </div>
     </div>
+    
+    <div id="install-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="install-modal-close-btn">&times;</span>
+            <h2 class="modal-title">Добавить на главный экран</h2>
+            <div class="modal-desc">
+                <h4>iOS (Safari)</h4>
+                <p>1. Нажмите иконку "Поделиться" <span class="instruction-icon">↑</span> внизу экрана.</p>
+                <p>2. В меню выберите "На экран 'Домой'".</p>
+                <p>3. Нажмите "Добавить".</p>
+                <br>
+                <h4>Android (Chrome)</h4>
+                <p>1. Нажмите меню <span class="instruction-icon">⋮</span> в правом верхнем углу.</p>
+                <p>2. Выберите "Установить приложение" или "Добавить на гл. экран".</p>
+                <p>3. Следуйте инструкциям на экране.</p>
+            </div>
+        </div>
+    </div>
 
     <button id="card-of-the-day-btn" class="fab" title="Карта Дня">🔮</button>
+    <button id="install-app-btn" class="fab fab-left" title="Добавить на экран">📥</button>
 
     <script>
         const cards = [
@@ -1049,6 +1086,10 @@
         const ttsButton = document.getElementById('modal-tts-btn');
         const cardOfTheDayBtn = document.getElementById('card-of-the-day-btn');
         
+        const installAppBtn = document.getElementById('install-app-btn');
+        const installModal = document.getElementById('install-modal');
+        const installModalCloseBtn = document.getElementById('install-modal-close-btn');
+
         let currentCardText = "";
         let isSpeaking = false;
 
@@ -1084,6 +1125,10 @@
             window.speechSynthesis.cancel();
             isSpeaking = false;
         }
+
+        function closeInstallModal() {
+            installModal.style.display = 'none';
+        }
         
         function getCardOfTheDay() {
             const today = new Date().toISOString().split('T')[0];
@@ -1113,9 +1158,17 @@
         }
 
         modalCloseBtn.onclick = closeModal;
+        installAppBtn.addEventListener('click', () => {
+            installModal.style.display = 'block';
+        });
+        installModalCloseBtn.onclick = closeInstallModal;
+        
         window.onclick = (event) => {
             if (event.target == modal) {
                 closeModal();
+            }
+            if (event.target == installModal) {
+                closeInstallModal();
             }
         }
         cardOfTheDayBtn.addEventListener('click', getCardOfTheDay);
