@@ -184,13 +184,36 @@
             background: var(--accent);
             color: var(--bg);
         }
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: var(--bg);
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            z-index: 999;
+        }
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(199, 168, 123, 0.5);
+        }
     </style>
 </head>
 <body>
 
     <h1>Энциклопедия "Astral Hero Tarot"</h1>
     
-    <a href="https://t.me/+y7Inf371g7w0NzMy" target="_blank" class="contact-btn">
+    <a href="https://t.me/maratbikchurin" target="_blank" class="contact-btn">
         Связь с Мастером (колода, расклады)
     </a>
     
@@ -207,6 +230,8 @@
             <button id="modal-tts-btn" class="tts-button" title="Озвучить/Остановить">🔊</button>
         </div>
     </div>
+
+    <button id="card-of-the-day-btn" class="fab" title="Карта Дня">🔮</button>
 
     <script>
         const cards = [
@@ -1022,6 +1047,7 @@
         const modalKeyword = document.getElementById('modal-keyword');
         const modalDesc = document.getElementById('modal-desc');
         const ttsButton = document.getElementById('modal-tts-btn');
+        const cardOfTheDayBtn = document.getElementById('card-of-the-day-btn');
         
         let currentCardText = "";
         let isSpeaking = false;
@@ -1059,12 +1085,40 @@
             isSpeaking = false;
         }
         
+        function getCardOfTheDay() {
+            const today = new Date().toISOString().split('T')[0];
+            const storedData = localStorage.getItem('cardOfTheDay');
+            
+            let cardIndex;
+            
+            if (storedData) {
+                try {
+                    const { date, index } = JSON.parse(storedData);
+                    if (date === today && index >= 0 && index < cards.length) {
+                        cardIndex = index;
+                    }
+                } catch (e) {
+                    console.error("Error parsing stored card data", e);
+                    localStorage.removeItem('cardOfTheDay');
+                }
+            }
+            
+            if (cardIndex === undefined) {
+                cardIndex = Math.floor(Math.random() * cards.length);
+                localStorage.setItem('cardOfTheDay', JSON.stringify({ date: today, index: cardIndex }));
+            }
+            
+            const card = cards[cardIndex];
+            showModal(card);
+        }
+
         modalCloseBtn.onclick = closeModal;
         window.onclick = (event) => {
             if (event.target == modal) {
                 closeModal();
             }
         }
+        cardOfTheDayBtn.addEventListener('click', getCardOfTheDay);
 
         document.addEventListener('DOMContentLoaded', () => {
             cards.forEach(card => {
@@ -1093,14 +1147,20 @@
                 const utterance = new SpeechSynthesisUtterance(currentCardText);
                 
                 const voices = window.speechSynthesis.getVoices();
-                let ruVoice = voices.find(v => v.lang === 'ru-RU');
+                // Попытка найти мужской голос
+                let ruVoice = voices.find(v => v.lang === 'ru-RU' && (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('мужской')));
+                
+                // Если мужской голос не найден, используем первый доступный русский голос
+                if (!ruVoice) {
+                    ruVoice = voices.find(v => v.lang === 'ru-RU');
+                }
                 
                 if (ruVoice) {
                     utterance.voice = ruVoice;
                 }
                 
                 utterance.lang = 'ru-RU';
-                utterance.rate = 0.9;
+                utterance.rate = 0.8;
                 utterance.pitch = 1.0;
                 
                 utterance.onend = () => {
