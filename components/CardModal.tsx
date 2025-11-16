@@ -27,6 +27,7 @@ const CardModal: React.FC<CardModalProps> = ({ card, onClose }) => {
         <img src={card.imageUrl} alt={card.name} className="w-full max-w-xs rounded-lg block mx-auto my-4" />
         
         <h2 className="font-cinzel text-custom-accent text-center text-3xl font-bold">{card.name}</h2>
+        <p className="text-center text-custom-accent/80 text-md mb-2">{card.arcana}</p>
         <h3 className="text-center italic text-custom-muted text-lg mb-4">{card.keyword}</h3>
         
         <div className="text-left text-base leading-relaxed space-y-4">
