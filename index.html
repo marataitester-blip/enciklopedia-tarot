@@ -1177,12 +1177,21 @@
         cardOfTheDayBtn.addEventListener('click', getCardOfTheDay);
 
         document.addEventListener('DOMContentLoaded', () => {
-            cards.forEach(card => {
+            cards.forEach((card, index) => {
                 const img = document.createElement('img');
                 img.src = card.imageUrl;
                 img.alt = card.name;
                 img.className = 'card-thumbnail';
-                img.loading = 'lazy';
+
+                // Add async decoding for all images to improve rendering performance.
+                img.decoding = 'async';
+
+                // Eagerly load the first 4 images (likely above the fold) and lazy-load the rest.
+                if (index < 4) {
+                    img.loading = 'eager';
+                } else {
+                    img.loading = 'lazy';
+                }
                 
                 img.onclick = () => showModal(card);
                 
